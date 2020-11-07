@@ -12,8 +12,14 @@ const COMMAND_ID = 'command.kandavu.addStatus';
 export function activate(context: vscode.ExtensionContext) {
     console.log('"kandavu" extension is now active!');
 
+	context.subscriptions.push(vscode.commands.registerCommand(COMMAND_ID, () => {
+		const n = 50
+		vscode.window.showInformationMessage(`Yeah, ${n} line(s) selected... Keep going!`);
+    }));
+     
     statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
     statusBarItem.text = 'kandavu';
+    statusBarItem.command = COMMAND_ID;
     statusBarItem.show();
 
     // The command has been defined in the package.json file
