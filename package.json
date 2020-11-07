@@ -1,0 +1,40 @@
+{
+  "name": "kandavu-vscode-extension",
+  "displayName": "kandavu-vscode-extension",
+  "description": "Kandavu Extension for VS Code",
+  "version": "0.0.1",
+  "publisher": "Mystic Coders, LLC",
+  "repository": "https://github.com/kandavu/kandavu-vscode-extension",
+  "engines": {
+    "vscode": "^1.34.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:extension.kandavu"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.kandavu",
+        "title": "Kandavu"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "lint": "eslint . --ext .ts,.tsx",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^12.12.0",
+    "@types/vscode": "^1.34.0",
+    "@typescript-eslint/eslint-plugin": "^3.0.2",
+    "@typescript-eslint/parser": "^3.0.2",
+    "eslint": "^7.1.0",
+    "typescript": "^4.0.2"
+  }
+}
