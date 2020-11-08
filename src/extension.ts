@@ -1,20 +1,55 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
+/**
+ * - Add a status bar called K or kandavu to VS Code
+ * - Clicking on the status bar should check for a login authorizationCode
+ * - Maybe we need personal access tokens that can be generated and saved with account (for now we can use authorizationKey)
+ * 
+ */
 import * as vscode from 'vscode';
+
+import axios from 'axios';
 
 let statusBarItem: vscode.StatusBarItem;
 
 const EXTENSION_ID = "extension.kandavu";
 const COMMAND_ID = 'command.kandavu.addStatus';
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
     console.log('"kandavu" extension is now active!');
 
-	context.subscriptions.push(vscode.commands.registerCommand(COMMAND_ID, () => {
-		const n = 50
-		vscode.window.showInformationMessage(`Yeah, ${n} line(s) selected... Keep going!`);
+	context.subscriptions.push(vscode.commands.registerCommand(COMMAND_ID, async () => {
+		const n = 50;
+        // vscode.window.showInformationMessage(`Yeah, ${n} line(s) selected... Keep going!`);
+        
+        const result = await vscode.window.showInputBox({
+            value: '',
+            placeHolder: 'Enter your kandavu status here'
+        });
+
+        vscode.window.showInformationMessage(`Added: ${result} to your kandavu status`);
+
+        const config = vscode.workspace.getConfiguration(EXTENSION_ID);
+
+        console.dir(config)
+
+        const kandavuHost = config.get("kandavu.host");
+        const authorizationKey = config.get("kandavu.authorizationKey");
+
+        vscode.window.showInformationMessage(`kandavuHost: ${kandavuHost}`);
+        vscode.window.showInformationMessage(`kandavu.authorizationKey: ${authorizationKey}`);
+        if(kandavuHost && authorizationKey) {
+            vscode.window.showErrorMessage(`Host and authorization key need to be added to settings`);
+            return;
+        }
+        // if !kandavuHost || !authorizationKey then error!!!
+        const data = await axios.post(`${kandavuHost}/statuses`, {
+            description: result
+        }, {
+            headers: {
+                'Authorization': authorizationKey
+            }
+        });
+
+        console.dir(data);
     }));
      
     statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
