@@ -27,7 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
 
         vscode.window.showInformationMessage(`Added: ${result} to your kandavu status`);
 
-        const config = vscode.workspace.getConfiguration(EXTENSION_ID);
+        const config = vscode.workspace.getConfiguration();
 
         console.dir(config)
 
@@ -68,4 +68,11 @@ export function activate(context: vscode.ExtensionContext) {
     });
 
     context.subscriptions.push(disposable);
+}
+
+/**
+ * No cleanup necessary
+ */
+export function deactivate(context: vscode.ExtensionContext) {
+    return undefined
 }
