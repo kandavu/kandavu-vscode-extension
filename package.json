@@ -22,6 +22,13 @@
         "title": "Kandavu"
       }
     ],
+    "keybindings": [
+      {
+        "command": "command.kandavu.addStatus",
+        "key": "ctrl+k",
+        "mac": "cmd+k"
+      }
+    ],
     "configuration": {
       "title": "Kandavu",
       "type": "object",

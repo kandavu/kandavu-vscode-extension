@@ -16,40 +16,31 @@ const COMMAND_ID = 'command.kandavu.addStatus';
 export function activate(context: vscode.ExtensionContext) {
     console.log('"kandavu" extension is now active!');
 
-	context.subscriptions.push(vscode.commands.registerCommand(COMMAND_ID, async () => {
-		const n = 50;
-        // vscode.window.showInformationMessage(`Yeah, ${n} line(s) selected... Keep going!`);
-        
+	context.subscriptions.push(vscode.commands.registerCommand(COMMAND_ID, async () => {        
         const result = await vscode.window.showInputBox({
             value: '',
             placeHolder: 'Enter your kandavu status here'
         });
 
-        vscode.window.showInformationMessage(`Added: ${result} to your kandavu status`);
-
-        const config = vscode.workspace.getConfiguration();
-
-        console.dir(config)
+        const config = vscode.workspace.getConfiguration()
 
         const kandavuHost = config.get("kandavu.host");
         const authorizationKey = config.get("kandavu.authorizationKey");
 
-        vscode.window.showInformationMessage(`kandavuHost: ${kandavuHost}`);
-        vscode.window.showInformationMessage(`kandavu.authorizationKey: ${authorizationKey}`);
         if(kandavuHost && authorizationKey) {
+            const data = await axios.post(`${kandavuHost}/statuses`, {
+                description: result
+            }, {
+                headers: {
+                    'Authorization': authorizationKey
+                }
+            })
+
+            vscode.window.showInformationMessage(`Added: ${result} to your kandavu status`)
+        } else {
             vscode.window.showErrorMessage(`Host and authorization key need to be added to settings`);
             return;
         }
-        // if !kandavuHost || !authorizationKey then error!!!
-        const data = await axios.post(`${kandavuHost}/statuses`, {
-            description: result
-        }, {
-            headers: {
-                'Authorization': authorizationKey
-            }
-        });
-
-        console.dir(data);
     }));
      
     statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
