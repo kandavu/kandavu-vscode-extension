@@ -25,14 +25,14 @@ export function activate(context: vscode.ExtensionContext) {
         const config = vscode.workspace.getConfiguration()
 
         const kandavuHost = config.get("kandavu.host");
-        const authorizationKey = config.get("kandavu.authorizationKey");
+        const accessToken = config.get("kandavu.accessToken");
 
-        if(kandavuHost && authorizationKey) {
+        if(kandavuHost && accessToken) {
             const data = await axios.post(`${kandavuHost}/statuses`, {
                 description: result
             }, {
                 headers: {
-                    'Authorization': authorizationKey
+                    'Authorization': accessToken
                 }
             })
 

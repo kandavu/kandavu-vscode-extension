@@ -38,9 +38,9 @@
           "description": "Kandavu host to write to",
           "default": "https://api.kandavu.dev"
         },
-        "kandavu.authorizationKey": {
+        "kandavu.accessToken": {
           "type": "string",
-          "description": "Authorization Key"
+          "description": "Access Token"
         }
       }
     }
